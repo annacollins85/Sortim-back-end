@@ -7,6 +7,7 @@ const router = require('./router');
 const cors = require('cors');
 require('./db');
 const corsOptions = {origin:'http://localhost:3000'};
+require('dotenv').config()
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());

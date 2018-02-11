@@ -3,12 +3,11 @@
 const Invite = require('../models/modelInvite');
 const nodemailer = require('nodemailer');
 
-
 const transporter = nodemailer.createTransport({
  service: 'gmail',
  auth: {
-        user: //put gmail password here
-        pass: //put password here
+        user: process.env.GMAIL_ADDRESS,
+        pass: process.env.GMAIL_PASSWORD
     }
 });
 
@@ -19,13 +18,12 @@ exports.invite = async (req, res) => {
     if (invite === null) {
       await Invite.createInvite(id, req.params.eventId);
       res.send('invite sent')
-      console.log('invite sent');
       return res.sendStatus(200);
     }
     else {
       transporter.sendMail({
-        from: req.body.otherUser[0],
-        to: //put email address of current user here
+        from: req.body.otherUser.email,
+        to: process.env.GMAIL_ADDRESS,
         subject: 'Someone on Sortim wants to connect with you',
         text: `Hello ${req.body.currentUser.name}! Someone swiped right and wants to connect with you on Sortim. Here's their email address ${req.body.otherUser.email}`
       }, function (err, info) {
